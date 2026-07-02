@@ -1,0 +1,39 @@
+name: Daily LeetCode Reminder
+
+on:
+  schedule:
+    # 08:00 America/Los_Angeles. GitHub cron is UTC; 15:00 UTC ≈ 8am PDT.
+    # (During PST/winter this lands at 7am — adjust to 16 if you want strict 8am year-round.)
+    - cron: "0 15 * * *"
+  workflow_dispatch: {}  # lets you trigger it manually from the Actions tab
+
+permissions:
+  issues: write  # needed to open the reminder issue
+
+jobs:
+  remind:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Pick today's problems
+        id: pick
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          # Your "Leetcode Problems" database id (not sensitive). Override with a
+          # secret named DATABASE_ID if you ever want to point at a different DB.
+          DATABASE_ID: ${{ secrets.DATABASE_ID || 'f5d7bec9-7f97-827f-98b4-81da91df3164' }}
+        run: python reminder.py
+
+      - name: Open reminder issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue create \
+            --title "${{ steps.pick.outputs.issue_title }}" \
+            --body-file reminder_body.md \
+            --repo "${{ github.repository }}"
