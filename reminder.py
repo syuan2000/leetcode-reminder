@@ -36,7 +36,7 @@ NEW_PER_DAY = 2
 REVIEW_PER_DAY = 1
 
 # Days before a problem is "due" for review again, by confidence.
-INTERVAL = {"Low": 1, "Med": 3, "High": 7}
+INTERVAL = {"Low": 2, "Med": 7, "High": 30}
 CONF_RANK = {"Low": 0, "Med": 1, "High": 2}
 
 # NeetCode 150, in roadmap order. "New" picks walk this and skip anything
