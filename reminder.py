@@ -259,7 +259,7 @@ def main():
         lines.append("- _Nothing due for review today._")
     lines.append("")
     lines.append("> After each: update **Confidence** in Notion — "
-                 "Low returns tomorrow, Med in 3 days, High in a week.")
+                 "Low returns in days, Med in 7 days, High in a month.")
 
     body = "\n".join(lines)
     with open("reminder_body.md", "w") as f:
